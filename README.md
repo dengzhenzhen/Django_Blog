@@ -10,6 +10,7 @@ Daily work is so boring that I'm afraid of losing my python skills. So I'm tring
 |frontend        | backend|
 |:--------------:|:------:|
 |only HTML and JS| Django |
+
 Django version: 2.0.7
 
 python version : Anaconda 4.3.30
