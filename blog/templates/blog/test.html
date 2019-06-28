@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown.js</title>
+    <script type="text/javascript" src="static/blog/showdown.min.js"></script>
+</head>
+<!--我们可以使用样式自定义markdown转换后的样式-->
+<style>
+/* <!--引用样式--!> */
+    blockquote {
+        border-left:#eee solid 5px;
+        padding-left:20px;
+    }
+/* <!--列表样式--!> */
+    ul li {
+        line-height: 20px;
+    }
+
+/* <--代码样式--!> */
+    code {
+        color:#D34B62;
+        background: #F6F6F6;
+    }
+ }
+</style>
+<body>
+<div>
+    <!-- <--设置id为oriContent，如果想实现实时更新，使用onkeyup方法--!> -->
+
+    <textarea id="oriContent" style="height:400px;width:600px;" onkeyup="convert()"></textarea>
+
+<!-- <---设置展示的div添加id-!> -->
+    <div id="result"></div>
+
+</div>
+
+<!-- <--写转化函数--!> -->
+<script type="text/javascript">
+function convert(){
+    var text = document.getElementById("oriContent").value;
+    var converter = new showdown.Converter();
+    var html = converter.makeHtml(text);
+    document.getElementById("result").innerHTML = html;
+}
+</script>
+</body>
+</html>

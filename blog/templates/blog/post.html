@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+<title>主页</title>
+</head>
+
+<body>
+<div class="navi-bar">
+    <div id="home" class = "navi-botton">
+        <h2><li><a href=>home</a></li></h2>
+    </div>
+    <div id="about" class="navi-botton">
+        <h2><li><a href=/about>about</a></li></h2>
+    </div>
+    <div id="about" class="navi-botton">
+        <h2><li><a href=/admin>admin</a></li></h2>
+    </div>
+
+</body>
+<script>
+    data = {{ data|safe }}
+    function temp_test(data){
+        document.write(data.topic + '<br>' + data.date + '<br>' + data.id + '<br>' + data.text)
+        console.log('running!')
+        alert('从后端接收到数据:\ntopic:' + data.topic + '\ndate:' + data.date + '\npost_id:' + data.post_id + '\ntext:' + data.text)
+    }
+    temp_test(data)
+</script>
+</html>

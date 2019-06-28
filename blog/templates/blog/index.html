@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+
+<head>
+<title>主页</title>
+</head>
+
+<body>
+<div class="navi-bar">
+    <div id="home" class = "navi-botton">
+        <h2><li><a href=>home</a></li></h2>
+    </div>
+    <div id="about" class="navi-botton">
+        <h2><li><a href=/about>about</a></li></h2>
+    </div>
+    <div id="about" class="navi-botton">
+        <h2><li><a href=/admin>admin</a></li></h2>
+    </div>
+    <div id='post_links'>
+        <!-- <div id = 'template'>
+            <span class='topic' id='topic_id'>templatetopic</span>
+            <span class='date' id='date_id'>xxxx-xx-xx</span>
+        </div> -->
+    </div>
+
+
+</body>
+<script>
+        function create_div_from_data(data){
+            var div = document.createElement('div')
+            div.id = data.post_id
+            div.class = 'post_abstract'
+            var post_link = document.createElement('a')
+            var topic_tag = document.createElement('h3')
+            post_link.href = '/blog/' + data.post_id
+            post_link.innerText = data.topic
+            topic_tag.appendChild(post_link)
+            var date_text = document.createElement('I')
+            date_text.innerText = "Posted on "+ data.date
+            div.appendChild(topic_tag)
+            div.appendChild(date_text)
+            div.appendChild(document.createElement('br'))
+            return div
+        }
+
+        data = {{ DATA|safe }}
+        // console.log(data)
+        // data's format:[{topic:str, post_id:int, date:str}]
+        divs = data.map(x => create_div_from_data(x))
+        post_div = document.getElementById('post_links')
+        for(index in divs){
+            post_div.appendChild(divs[index])
+        }
+
+</script>
+</html>
