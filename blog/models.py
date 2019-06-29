@@ -14,6 +14,36 @@ class blog_post(models.Model):
     SUBTITLE = models.CharField(max_length=30, default='')
     BACKGROUND_IMG = models.CharField(max_length=50, default='')
 
+    def get_index_data(self):
+        posts = blog_post.objects.all()
+        data = [{
+            "topic":post.TOPIC,
+            "date":str(post.DATE),
+        "post_id":post.POST_ID
+                } for post in posts]        
+        return data
+
+    def get_post_data_by_postid(self, post_id):
+        '''
+        If post_id exists, return query 'select * where POST_ID=post_id'
+        else, return False
+        '''
+        try:
+            post = blog_post.objects.get(POST_ID=post_id)
+        except:
+            return False
+        data = {
+                'data':{
+                        'post_id':post.POST_ID,
+                        'topic':post.TOPIC,
+                        'date':str(post.DATE),
+                        'text':post.TEXT
+                        }
+                }
+        return data       
+
+
+
 class blog_information(models.Model):
     '''
     BLOG_NAME : Name of your blog, written on homepage.
@@ -29,3 +59,16 @@ class blog_information(models.Model):
     HOME_BG_IMG = models.CharField(max_length=30)
     ABOUT_BG_IMG = models.CharField(max_length=30)
 
+    def get_blog_information(self):
+        info = blog_information.objects.get()
+        data = {
+                'data' : {
+                          'blog_name' : info.BLOG_NAME,
+                      'home_subtitle' : info.HOME_SUBTITLE,
+                     'about_subtitle' : info.ABOUT_SUBTITLE,
+                  'self_introduction' : info.SELF_INTRODUCTION,
+                        'home_bg_img' : info.HOME_BG_IMG,
+                       'about_bg_img' : info.ABOUT_BG_IMG
+                }
+                }
+        return data
