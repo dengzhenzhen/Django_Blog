@@ -16,11 +16,13 @@ class blog_post(models.Model):
 
     def get_index_data(self):
         posts = blog_post.objects.all()
-        data = [{
-            "topic":post.TOPIC,
-            "date":str(post.DATE),
-        "post_id":post.POST_ID
-                } for post in posts]        
+        data ={
+            'data' : [{
+                "topic":post.TOPIC,
+                 "date":str(post.DATE),
+              "post_id":post.POST_ID
+                } for post in posts]     
+        }   
         return data
 
     def get_post_data_by_postid(self, post_id):

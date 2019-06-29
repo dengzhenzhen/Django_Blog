@@ -1,15 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from .models import blog_post, blog_information
-import json
 # Create your views here.
 
 def index(request):
-
-    context = {'DATA' : blog_post().get_index_data()}
-    #print(context)
-    #return HttpResponse(context)
-    return render(request, 'blog/index.html', context=context)
+    return render(request, 'blog/index.html', context=blog_post().get_index_data())
 
 def post_page(request, post_id):
     data = blog_post().get_post_data_by_postid(post_id)
