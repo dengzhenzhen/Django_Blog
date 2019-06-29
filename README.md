@@ -61,6 +61,9 @@ I'm not sure if it can run in other environment successfully.
 - Try to refactoring frontend with frontend framework, 
 for example, Vue
 - Deploy this blog on a linux server with a shell file run.sh
+- Frontend converter used to convert markdown file to html
+- Comment function
+- Tag funtion
 
 ## 5. Contact information
 E-mail: zhenzhendeng2012@gmail.com
