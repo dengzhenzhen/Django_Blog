@@ -5,7 +5,10 @@
 <title>{{ data.topic}}</title>
 <script type="text/javascript" src="../static/blog/showdown.min.js"></script>
 <script type="text/javascript" src="../static/blog/showdown-table.min.js"></script>
+<script type="text/javascript" src="../static/blog/blog.js"></script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <!-- https://github.com/sindresorhus/github-markdown-css/blob/gh-pages/github-markdown.css -->
+<!-- http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../static/blog/github-markdown.css">
 <style>
@@ -51,21 +54,7 @@
 </body>
 <script type="text/javascript">
     data = {{ data|safe }}
-    function temp_test(data){
-        var alt_str = ''
-        for(key in data){
-            console.log(key + ':' + data[key] )
-            alt_str += key + ':' + data[key] + '\n'
-        }
-        //alert(alt_str)
-    }
     temp_test(data)
-    function convert(){
-    var text = document.getElementById("md").value;
-    var converter = new showdown.Converter();
-    var html = converter.makeHtml(text);
-    document.getElementById("result").innerHTML = html;
-    }
     //convert()
     var converter = new showdown.Converter({extensions: ['table']});
     html = converter.makeHtml(data.text)
