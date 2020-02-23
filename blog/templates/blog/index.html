@@ -1,11 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
-<title>主页</title>
-<script type="text/javascript" src="../static/blog/blog.js"></script>
+<meta charset="utf-8">
+<title>Vue 测试实例</title>
+<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="../static/blog/showdown.min.js"></script>
+<script type="text/javascript" src="../static/blog/showdown-table.min.js"></script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel="stylesheet" href="../static/blog/github-markdown.css">
 <style>
-        .post_links {
+        .markdown-body {
             box-sizing: border-box;
             min-width: 200px;
             max-width: 980px;
@@ -14,7 +21,7 @@
         }
     
         @media (max-width: 767px) {
-            .post_links {
+            .markdown-body {
                 padding: 15px;
             }
         }
@@ -29,56 +36,147 @@
 </head>
 
 <body>
-<div class="navi-bar">
-    <div id="home" class = "navi-botton">
-        <h4><li><a href=>home</a></li></h4>
-    </div>
-    <div id="about" class="navi-botton">
-        <h4><li><a href=/about>about</a></li></h4>
-    </div>
-    <div id="admin" class="navi-botton">
-        <h4><li><a href=/admin>admin</a></li></h4>
-    </div>
-</div>
-<div>
-        <h1 class='topic' id='topic'>我的博客</h1>
-        <article  id='markdown-body' class='markdown-body'></article>
-</div>
-<div id='post_links' class='post_links'>
-    <!-- <div id = 'template'>
-        <span class='topic' id='topic_id'>templatetopic</span>
-        <span class='date' id='date_id'>xxxx-xx-xx</span>
-    </div> -->
+<div id="app">
+  <p>
+    <router-link to="/home">Home</router-link>
+    <!-- <router-link to="/post">Post</router-link> -->
+    <router-link to="/about">About</router-link>
+    <h1>这是一个博客</h1>
+  </p>
+  <router-view></router-view>
 </div>
 
+<template id="post-list">
+  <ul>
+    <li v-for="n in info.data">
+      <router-link :to="{ path: 'blog', query: { post_id: n.post_id }}">
+        {{ n.topic }}
+      </router-link>
+      <br>
+      {{ n.date }}<br><br>
+    </li>
+  </ul>
+</template>
+
+<template id='post'>
+  <div>
+    {{ info.topic }}
+    <br>
+    {{ info.date }}
+    <br>
+    <article  id='markdown-body' class='markdown-body'>
+      <span v-html='article_html'></span>
+    </article>
+    <br>
+  </div>
+</template>
 
 </body>
+
 <script>
-        function create_div_from_data(data){
-            var div = document.createElement('div')
-            div.id = data.post_id
-            div.class = 'post_abstract'
-            var post_link = document.createElement('a')
-            var topic_tag = document.createElement('h3')
-            post_link.href = '/blog/' + data.post_id
-            post_link.innerText = data.topic
-            topic_tag.appendChild(post_link)
-            var date_text = document.createElement('I')
-            date_text.innerText = "Posted on "+ data.date
-            div.appendChild(topic_tag)
-            div.appendChild(date_text)
-            div.appendChild(document.createElement('br'))
-            return div
-        }
 
-        data = {{ data|safe }}
-        // console.log(data)
-        // data's format:[{topic:str, post_id:int, date:str}]
-        divs = data.map(x => create_div_from_data(x))
-        post_div = document.getElementById('post_links')
-        for(index in divs){
-            post_div.appendChild(divs[index])
-        }
+const home = Vue.component(
+  'post-list',{
+    template:'#post-list',
+    data:function(){
+      return {
+        info:"null",
+        template:""
+      }
+    },
+    mounted:function(){
+      axios
+      .get('/test')
+      .then(response => {
+          this.info= response.data
+      })
+      .catch(function (error) { // 请求失败处理
+        console.log(error);
+      });
+    },
+    methods:{
+      CreatePostHref: (post_id)=>{ return "/blog/" + post_id }
+    }
+  }
+)
 
+const post = Vue.component(
+  'post',{
+    template:'#post',
+    data:function(){
+      console.log(this.$route.query.post_id);
+      return {
+        info:{
+          'topic':'文章标题',
+          'date':'发布日期',
+          'text':'正文',
+          'post_id':this.$route.query.post_id
+          },
+        article_html:''
+      }
+    },
+    mounted:function(){
+      axios
+      .get("/blog/" + this.info.post_id)
+      .then(
+        response => {
+          this.info = response.data.data
+
+          var converter = new showdown.Converter({extensions: ['table']});
+          html = converter.makeHtml(this.info.text)
+          console.log(html)
+          this.article_html = html;
+          console.log(this.innerHtml)
+        }
+      )
+      .catch(function (error) { // 请求失败处理
+        console.log(error);
+      });
+
+    // var converter = new showdown.Converter({extensions: ['table']});
+    // html = converter.makeHtml(this.info.text)
+    // this.article_html = html;
+
+    // document.getElementById("markdown-body").innerHTML = html;
+    }
+  }
+)
+
+var x = 123456
+
+const about = Vue.component('button-counter', {
+  template: '<div v-on:click="incrementHandler">{{ counter }}</div>',
+  data: function () {
+    return {
+      counter: 0
+    }
+  },
+  methods: {
+    incrementHandler: function () {
+      this.counter += 1
+      this.$emit('increment')
+      console.log(this.counter)
+    }
+  },
+})
+
+
+
+const routes = [
+  { path: '/home', component: home },
+  { path: '/post', component: post },
+  { path: '/about', component: about },
+  { path: '/blog/', component: post },
+]
+
+const router = new VueRouter({
+  routes // （缩写）相当于 routes: routes
+})
+
+const app = new Vue({
+  router
+}).$mount('#app')
+
+// 现在，应用已经启动了！
 </script>
 </html>
