@@ -33,6 +33,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 I'm not sure if it can run in other environment successfully.
 
+--------------------------
+### 2020-02-24 update:
+
+Rewrite frontend with Vue.js, instead of backend rendering.
+
 ## 3.How to use?
 
 ### 1.Excute run.ps1 in powershell
@@ -55,7 +60,7 @@ I'm not sure if it can run in other environment successfully.
 
 ## 4. What to update in following versions?
 
-- Complte frontend
+- Complete frontend
 - Beautfy  and modify frontend pages
 - Add about page
 - Try to refactoring frontend with frontend framework, 
@@ -63,7 +68,7 @@ for example, Vue
 - Deploy this blog on a linux server with a shell file run.sh
 - Frontend converter used to convert markdown file to html
 - Comment function
-- Tag funtion
+- Tag function
 
 ## 5. Contact information
 E-mail: zhenzhendeng2012@gmail.com
