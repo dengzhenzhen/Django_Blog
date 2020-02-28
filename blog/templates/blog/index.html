@@ -86,7 +86,10 @@ const home = Vue.component(
     },
     mounted:function(){
       axios
-      .get('/test')
+      .get('..',
+          {
+            params:{'content':'post_list'}
+          })
       .then(response => {
           this.info= response.data
       })
@@ -95,7 +98,8 @@ const home = Vue.component(
       });
     },
     methods:{
-      CreatePostHref: (post_id)=>{ return "/blog/" + post_id }
+      // CreatePostHref: (post_id)=>{ return "/blog/" + post_id }
+      CreatePostHref: (post_id)=>{ return ""}
     }
   }
 )
@@ -117,7 +121,13 @@ const post = Vue.component(
     },
     mounted:function(){
       axios
-      .get("/blog/" + this.info.post_id)
+      //.get("/blog/" + this.info.post_id)
+      .get('..', {
+        'params':{
+            "post_id":this.info.post_id,
+            'content':'post'
+        }
+      })
       .then(
         response => {
           this.info = response.data.data
@@ -163,6 +173,7 @@ const about = Vue.component('button-counter', {
 
 
 const routes = [
+  { path: '', component: home },
   { path: '/home', component: home },
   { path: '/post', component: post },
   { path: '/about', component: about },
